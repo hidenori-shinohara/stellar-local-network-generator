@@ -101,3 +101,6 @@ elif sys.argv[1] == "config":
             fobj.write(config)
             fobj.close()
             os.chdir("..")
+elif sys.argv[1] == "monitor":
+    for node_number in range(number_of_nodes):
+        subprocess.call(["open", "-a", "Google Chrome", "http://127.0.0.1:%d/metrics" % (8080 + node_number)])
