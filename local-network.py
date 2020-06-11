@@ -55,11 +55,11 @@ if sys.argv[1] == "clone":
     os.mkdir(nodes_directory_name)
     os.chdir(nodes_directory_name)
     print("cloning %d copies of stellar-core" % number_of_nodes)
-    for node_number in range(1, number_of_nodes + 1):
+    for node_number in range(number_of_nodes):
         subprocess.call(["git", "clone", stellar_core_git_path, "node-%d" % node_number])
 elif sys.argv[1] == "clean_build":
     os.chdir(nodes_directory_name)
-    for node_number in range(1, number_of_nodes + 1):
+    for node_number in range(number_of_nodes):
         directory_name = "node-%d" % node_number
         if os.path.isdir(directory_name):
             print("Building node %d" % node_number)
@@ -72,7 +72,7 @@ elif sys.argv[1] == "config":
     os.chdir(nodes_directory_name)
     public_keys = []
     private_keys = []
-    for node_number in range(1, number_of_nodes + 1):
+    for node_number in range(number_of_nodes):
         directory_name = "node-%d" % node_number
         if os.path.isdir(directory_name):
             os.chdir(directory_name)
@@ -80,20 +80,20 @@ elif sys.argv[1] == "config":
             private_keys.append(proc.stdout.readline().split()[-1].decode("utf-8"))
             public_keys.append(proc.stdout.readline().split()[-1].decode("utf-8"))
             os.chdir("..")
-    for node_number in range(1, number_of_nodes + 1):
+    for node_number in range(number_of_nodes):
         directory_name = "node-%d" % node_number
         if os.path.isdir(directory_name):
             os.chdir(directory_name)
             peers = []
             validators = ["$self"]
-            for other_node_number in range(1, number_of_nodes + 1):
+            for other_node_number in range(number_of_nodes):
                 if node_number != other_node_number:
                     peers.append("127.0.0.1:%d" % (11625 + other_node_number))
-                    validators.append(public_keys[other_node_number - 1])
+                    validators.append(public_keys[other_node_number])
             config = config_tmpl.format(HTTP_PORT = 8080 + node_number,
                                         PEER_PORT = 11625 + node_number,
-                                        PUBLIC_KEY = public_keys[node_number - 1],
-                                        PRIVATE_KEY = private_keys[node_number - 1],
+                                        PUBLIC_KEY = public_keys[node_number],
+                                        PRIVATE_KEY = private_keys[node_number],
                                         KNOWN_PEERS = json.dumps(peers),
                                         VALIDATORS = json.dumps(validators),
                                         node_number = node_number)
