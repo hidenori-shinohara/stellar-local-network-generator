@@ -22,13 +22,13 @@ if sys.argv[1] == "clone":
     os.chdir(nodes_directory_name)
     print("cloning %d copies of stellar-core" % number_of_nodes)
     for node_number in range(number_of_nodes):
-        subprocess.call(["git", "clone", stellar_core_git_path, "node-%d" % (node_number + 1)])
+        subprocess.call(["git", "clone", stellar_core_git_path, "node-%d" % node_number])
 elif sys.argv[1] == "build":
     os.chdir(nodes_directory_name)
     for node_number in range(max_number_of_nodes):
-        directory_name = "node-%d" % (node_number + 1)
+        directory_name = "node-%d" % node_number
         if os.path.isdir(directory_name):
-            print("Building node %d" % (node_number + 1))
+            print("Building node %d" % node_number)
             os.chdir(directory_name)
             subprocess.call(["./autogen.sh"])
             subprocess.call(["./configure", "--enable-ccache"])
