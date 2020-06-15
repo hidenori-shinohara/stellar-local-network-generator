@@ -66,6 +66,7 @@ elif sys.argv[1] == "clean_build":
             os.chdir(directory_name)
             subprocess.call(["./autogen.sh"])
             subprocess.call(["./configure", "--enable-ccache"])
+            subprocess.call(["python3", "/Users/hidenorishinohara/makemakefast/makemakefast.py"])
             subprocess.call(["make", "-j3"])
             os.chdir("..")
 elif sys.argv[1] == "config":
